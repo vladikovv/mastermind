@@ -84,7 +84,7 @@ def play
       print "YOU GUESSED IT! CONGRATS! \n\n"
       print "Going to main menu!\n"
       sleep(2)
-      game
+      main_menu
     end
     print "Bulls: #{bulls_count}\n"
     cows_count = calculate_cows(secret_code, bulls_count, guess)
@@ -98,10 +98,10 @@ def play
   print "Going to main menu .....\n"
   sleep(2)
 
-  game
+  main_menu
 end
 
-def game
+def main_menu
   print("\n\n")
   print("COWS AND BULLS\n\n")
   sleep(2)
@@ -130,10 +130,10 @@ def game
     print_dashes_and_sleep(0.5)
     print_dashes_and_sleep(2)
     print_instructions
-    game
+    main_menu
   when 'quit'
     exit
   end
 end
 
-game
+main_menu
