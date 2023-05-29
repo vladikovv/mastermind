@@ -15,11 +15,19 @@ def calculate_bulls(code, guess)
 end
 
 def calculate_cows(code, bulls_count, guess)
-  code_letter_hash = code.each_char.tally
-  guess_letter_hash = guess.each_char.tally
-  #TODO: fix this mess
+  result = 0
+  code_hash = code.each_char.tally
+  guess_hash = guess.each_char.tally
 
-  print code_hash
+  code_hash.each do |k1, v1|
+    guess_hash.each do |k2, v2|
+      if k1 == k2
+        result += [v1, v2].min
+      end
+    end
+  end
+
+  result - bulls_count
 end
 
 def valid_guess?(guess)
@@ -27,39 +35,39 @@ def valid_guess?(guess)
 end
 
 def print_dashes_and_sleep(seconds)
-  print ("------------\n")
+  print("\n")
   sleep(seconds)
 end
 
 def print_instructions
-  print("This game is called Cows and Bulls\n")
+  print("INSTRUCTIONS:\n")
   sleep(2)
-  print "You need to guess the exact code the computer has generated in 12 or less attempts!\n"
+  print "You need to guess the exact code the computer has generated in 12 or less attempts!\n\n"
   sleep(3)
-  print "After each guess you will get clues about the correctness of your guesses!\n"
+  print "The code is 4 digits long and each digit is between 0 and 6.\n\n"
   sleep(3)
-  print("A bull means that you have correctly guessed both the number and its position in the code!\n")
+  print "The digits can be repeated!\n\n"
+  sleep(2)
+  print "After each guess you will get clues about the correctness of your guesses!\n\n"
+  sleep(3)
+  print("A bull means you have correctly guessed both the number and its position in the code!\n\n")
   sleep(4)
-  print("A cow means that you have correctly guessed the number but you've yet to figure out its correct position in the code\n")
+  print("A cow means you have correctly guessed the number but you've yet to figure out its correct position in the code\n\n")
   sleep(5)
-  print("Well, let's begin :)\n")
+
 end
 
-def game
-  # print_instructions
-  # print_dashes_and_sleep(0.5)
-  # print_dashes_and_sleep(0.5)
-  # print_dashes_and_sleep(0.5)
-  # print_dashes_and_sleep(2)
-
-  secret_code = generate_code
+def play
+  print("Well, let's begin :)\n")
+  secret_code = "1234"
   print "Secret code has been generated!\n\n"
   sleep(2)
 
   number_of_guesses_left = 12
+  game_over = false
+
   while number_of_guesses_left != 0
-    print "code: #{secret_code}\n\n"
-    print "You have #{number_of_guesses_left} guesses left decipher it or you lose!\n\n"
+    print "You have #{number_of_guesses_left} guesses left to decipher it or you lose!\n\n"
     sleep(2)
     print 'Enter your guess: '
     guess = gets.chomp
@@ -70,17 +78,63 @@ def game
       guess = gets.chomp
     end
     print_dashes_and_sleep(0.5)
-    print_dashes_and_sleep(0.5)
-    print_dashes_and_sleep(0.5)
     print_dashes_and_sleep(1)
+    print "\n"
     bulls_count = calculate_bulls(secret_code, guess)
-    print "bulls: #{bulls_count}\n"
+    if bulls_count == 4
+      print "YOU GUESSED IT! CONGRATS! \n\n"
+      print "Going to main menu!\n"
+      sleep(2)
+      game
+    end
+    print "Bulls: #{bulls_count}\n"
     cows_count = calculate_cows(secret_code, bulls_count, guess)
-    print "cows: #{cows_count}\n\n"
+    print "Cows: #{cows_count}\n\n"
     number_of_guesses_left -= 1
-
   end
-  print "The code was #{secret_code}! ggwp"
+  print "You sadly lost((\n"
+  print "The code was #{secret_code}! Nice try..\n\n"
+  sleep(5)
+
+  print "Going to main menu .....\n"
+  sleep(2)
+
+  game
+end
+
+def game
+  print("\n\n")
+  print("COWS AND BULLS\n\n")
+  sleep(2)
+  print("Input 'play' to start a game!\n")
+  sleep(1)
+  print("Input 'help' to see the game's instructions!\n")
+  sleep(1)
+  print("Input 'quit' to quit (obviously)\n\n")
+  sleep(1)
+  print('Your input: ')
+
+  command = gets.chomp
+  while command != 'play' && command != 'help' && command != 'quit'
+    print('Your input: ')
+    command = gets.chomp
+  end
+
+  case command
+  when 'play'
+    print_dashes_and_sleep(0.5)
+    print_dashes_and_sleep(0.5)
+    print_dashes_and_sleep(2)
+    play
+  when 'help'
+    print_dashes_and_sleep(0.5)
+    print_dashes_and_sleep(0.5)
+    print_dashes_and_sleep(2)
+    print_instructions
+    game
+  when 'quit'
+    exit
+  end
 end
 
 game
