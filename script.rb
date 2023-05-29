@@ -59,12 +59,11 @@ end
 
 def play
   print("Well, let's begin :)\n")
-  secret_code = "1234"
+  secret_code = generate_code
   print "Secret code has been generated!\n\n"
   sleep(2)
 
   number_of_guesses_left = 12
-  game_over = false
 
   while number_of_guesses_left != 0
     print "You have #{number_of_guesses_left} guesses left to decipher it or you lose!\n\n"
